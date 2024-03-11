@@ -1,0 +1,15 @@
+add
+peach juice
+12.2
+546.1
+59.07
+liters
+j7
+544545
+TRUST
+j street
+56578
+save
+show
+execute_script script.txt
+exit
