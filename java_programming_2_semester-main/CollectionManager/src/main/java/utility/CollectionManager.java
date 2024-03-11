@@ -2,7 +2,7 @@ package utility;
 
 import utility.csv.CSVProcess;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.*;
 import data.*;
 
@@ -15,7 +15,7 @@ public class CollectionManager {
     public static Stack<Product> productStack = new Stack<>();
 
     private static PriorityQueue<Product> priorityQueue;
-    private static ZonedDateTime initializationDate;
+    private static LocalDateTime initializationDate;
 
     private static Comparator<Product> descendingOrderComparator = new Comparator<Product>() {
         @Override
@@ -44,7 +44,7 @@ public class CollectionManager {
      */
     public static void initializationCollection() {
             priorityQueue = new PriorityQueue<>();
-            initializationDate = ZonedDateTime.now();
+            initializationDate = LocalDateTime.now();
     }
 
     /**
