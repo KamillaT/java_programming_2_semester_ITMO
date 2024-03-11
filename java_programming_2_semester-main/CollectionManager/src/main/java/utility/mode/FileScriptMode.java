@@ -117,6 +117,7 @@ public class FileScriptMode implements IMode {
                 commandStatus = 1;
                 break;
             case "execute_script" :
+                receiver.executeScript(commandArgument);
                 handleExecuteScriptCommand(commandArgument);
                 commandStatus = 1;
                 break;
