@@ -180,7 +180,7 @@ public class FileScriptMode implements IMode {
      * @param scriptFile The path to the script file to be executed.
      */
     public void handleExecuteScriptCommand (String scriptFile) {
-        System.out.println(scriptStack);
+//        System.out.println(scriptStack);
         String path = null;
         if (System.getenv("HOMEPATH") != null) {
             path = System.getenv("HOMEPATH") + "\\";
