@@ -174,7 +174,7 @@ public class Receiver {
      */
     public void pushCommand(String name) {
         if (CollectionManager.historyCommandList.size() == 11) {
-            CollectionManager.historyCommandList.pop();
+            CollectionManager.historyCommandList.remove(0);
         }
         CollectionManager.historyCommandList.push(name);
     }
