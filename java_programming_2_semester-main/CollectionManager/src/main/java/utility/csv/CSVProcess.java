@@ -2,7 +2,9 @@ package utility.csv;
 
 import data.*;
 import utility.CollectionManager;
+import utility.ConsolePrinter;
 
+import java.io.File;
 import java.util.PriorityQueue;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +44,24 @@ public class CSVProcess {
     }
 
     /**
+     * Check file permissions
+     *
+     * @param filePath The path to file.
+     */
+    public static void checkPermissions(String filePath) {
+        File file = new File(filePath);
+        if (!file.canRead()) {
+            file.setReadable(true);
+        }
+        if (!file.canWrite()) {
+            file.canWrite();
+        }
+        if (!file.canExecute()) {
+            file.setExecutable(true);
+        }
+    }
+
+    /**
      * Loads the collection from the specified CSV file.
      *
      * @param fileName The name of the CSV file to load the collection from.
@@ -52,6 +72,7 @@ public class CSVProcess {
             System.out.println("File name has not been provided!");
         } else {
             try {
+                checkPermissions(fileName);
                 List<String> parsedCSVFile = CSVReader.readFromFile(fileName);
                 CollectionManager.initializationCollection();
                 PriorityQueue<Product> products = CollectionManager.getCollection();
@@ -62,27 +83,80 @@ public class CSVProcess {
                         continue;
                     }
                     String[] elements = line.split(",");
-                    int id = Integer.parseInt(elements[0]);
+                    Integer id = Integer.parseInt(elements[0]);
+                    if (id < 0 || id == null) {
+                        ConsolePrinter.printError("Incorrect ID!");
+                        break;
+                    }
                     String name = elements[1];
                     Double x = Double.valueOf(elements[2]);
+                    if (x < 0) {
+                        ConsolePrinter.printError("Incorrect x coordinate!");
+                        break;
+                    }
                     Double y = Double.valueOf(elements[3]);
+                    if (y < 0) {
+                        ConsolePrinter.printError("Incorrect y coordinate!");
+                        break;
+                    }
                     Coordinates coordinates = new Coordinates(x,y);
                     Float price = Float.valueOf(elements[4]);
+                    if (price < 0) {
+                        ConsolePrinter.printError("Incorrect price!");
+                        break;
+                    } 
                     UnitOfMeasure unitOfMeasure = UnitOfMeasure.valueOf(elements[5]);
-                    long productId = Long.parseLong(elements[6]);
+                    String strUnitOfMeasure = unitOfMeasure.toString();
+                    boolean checkUnitOfMeasure = (strUnitOfMeasure.toUpperCase() == "CENTIMETRES") ||
+                            (strUnitOfMeasure.toUpperCase() == "PCS") || (strUnitOfMeasure.toUpperCase() == "LITERS")
+                            || (strUnitOfMeasure.toUpperCase() == "GRAMS");
+                    if (!checkUnitOfMeasure) {
+                        ConsolePrinter.printError("Incorrect unit of measure!");
+                        break;
+                    }
+                    Long productId = Long.parseLong(elements[6]);
+                    if (productId < 0) {
+                        ConsolePrinter.printError("Incorrect price!");
+                        break;
+                    }
                     String productName = elements[7];
+                    if (productName == null) {
+                        ConsolePrinter.printError("Incorrect product name!");
+                        break;
+                    }
                     Double annualTurnover = Double.valueOf(elements[8]);
-                    OrganizationType productType = OrganizationType.valueOf(elements[9]);
+                    if (annualTurnover < 0) {
+                        ConsolePrinter.printError("Incorrect annual turnover!");
+                        break;
+                    }
+                    OrganizationType organizationType = OrganizationType.valueOf(elements[9]);
+                    String strOrganizationType = organizationType.toString();
+                    boolean checkOrganizationType = (strOrganizationType.toUpperCase() == "COMMERCIAL") ||
+                            (strOrganizationType.toUpperCase() == "GOVERNMENT") || (strOrganizationType.toUpperCase() == "TRUST")
+                            || (strOrganizationType.toUpperCase() == "OPEN_JOINT_STOCK_COMPANY");
+                    if (!checkOrganizationType) {
+                        ConsolePrinter.printError("Incorrect organization type!");
+                        break;
+                    }
                     String street = elements[10];
+                    if (street == null) {
+                        ConsolePrinter.printError("Incorrect name!");
+                        break;
+                    }
                     String zipCode = elements[11];
+                    if (zipCode == null) {
+                        ConsolePrinter.printError("Incorrect name!");
+                        break;
+                    }
                     Address address = new Address(street, zipCode);
                     Organization organization = new Organization(productId, productName, annualTurnover,
-                            productType, address);
+                            organizationType, address);
                     Product product = new Product(id, name, coordinates, price, unitOfMeasure, organization);
                     products.add(product);
                 }
                 CSVProcess.products = products;
             } catch (IllegalArgumentException exception) {
+                ConsolePrinter.printError(exception.getMessage());
                 throw new IllegalArgumentException("CSV Format Violation!: " + exception.getMessage());
             }
         }

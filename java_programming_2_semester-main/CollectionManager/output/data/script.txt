@@ -10,4 +10,5 @@ TRUST
 baker street
 454454
 save
-exit
+execute_script \IdeaProjects\java_programming_2_semester-main-v.3\java_programming_2_semester-main\CollectionManager\output\data\script1.txt
+info

@@ -20,44 +20,8 @@ public class Console {
     public static void starter(String pathToFile) {
         CSVProcess.setPathToFile(pathToFile);
         CollectionManager.getCollectionFromFile(CSVProcess.getPathToFile());
-        boolean validInput = false;
-        try {
-            while (!validInput) {
-                if (CSVReader.getFlag()) {
-                    ConsolePrinter.printInformation("Do you want to use the existing data in this file? (yes / no)");
-                    Scanner scanner = new Scanner(System.in);
-                    String answer = scanner.nextLine().trim();
-                    while (!validInput) {
-                        switch (answer) {
-                            case "yes":
-                                ConsolePrinter.printResult("The data from file has been loaded!");
-                                validInput = true;
-                                break;
-                            case "no":
-                                CollectionManager.initializationCollection();
-                                ConsolePrinter.printResult("A new collection has been created!");
-                                validInput = true;
-                                break;
-                            default:
-                                ConsolePrinter.printInformation("Invalid input. Please enter 'yes' or 'no'.");
-                                answer = scanner.nextLine().trim();
-                        }
-                    }
-                    CommandManager.commandStarter();
-                    UserInputMode userInputMode = new UserInputMode();
-                    userInputMode.executeMode();
-                } else {
-                    ConsolePrinter.printResult("Your file is empty!");
-                    ConsolePrinter.printResult("A new collection has been created!");
-                    CollectionManager.initializationCollection();
-                    validInput = true;
-                    CommandManager.commandStarter();
-                    UserInputMode userInputMode = new UserInputMode();
-                    userInputMode.executeMode();
-                }
-            }
-        } catch (NoSuchElementException exception) {
-            System.exit(0);
-        }
+        CommandManager.commandStarter();
+        UserInputMode userInputMode = new UserInputMode();
+        userInputMode.executeMode();
     }
 }

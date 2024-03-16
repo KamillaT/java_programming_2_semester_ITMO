@@ -254,6 +254,16 @@ public class CollectionManager {
      */
     public static void getCollectionFromFile(String fileName) {
         priorityQueue = CSVProcess.loadCollection(fileName);
+        if (priorityQueue == null) {
+            ConsolePrinter.printResult("Your file is empty!");
+        }
+        else {
+            if (priorityQueue.size() == 0) {
+                ConsolePrinter.printResult("Your file is empty!");
+            } else {
+                ConsolePrinter.printResult("The data from file has been loaded!");
+            }
+        }
     }
 
     /**

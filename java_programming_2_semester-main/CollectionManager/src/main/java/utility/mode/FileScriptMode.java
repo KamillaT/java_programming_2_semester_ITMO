@@ -20,7 +20,7 @@ import java.util.Scanner;
  */
 public class FileScriptMode implements IMode {
     private String argument;
-    private boolean flag = true;
+    private boolean flag = false;
     private int count = 0;
     private int number = 0;
     private int commandStatus = 0;
@@ -42,27 +42,27 @@ public class FileScriptMode implements IMode {
     @Override
     public void executeMode() {
         count += 1;
-        ProductBuilder organizationBuilder = new ProductBuilder(new Scanner(System.in));
-        Scanner tmpScanner = organizationBuilder.getUserScanner();
+        ProductBuilder productBuilder = new ProductBuilder(new Scanner(System.in));
+        Scanner tmpScanner = productBuilder.getUserScanner();
         CommandManager.commandStarter();
         try {
-            initializeScript(this.argument);
-            organizationBuilder.setUserScanner(userScanner);
-            organizationBuilder.setFileMode();
+            initializeScript(argument);
+            productBuilder.setUserScanner(userScanner);
+            productBuilder.setFileMode();
             do {
                 String userCommand = getNextUserCommand();
                 handleUserCommand(userCommand);
             } while (commandStatus == 1 && userScanner.hasNextLine());
 
         } catch (FileNotFoundException exception) {
-            ConsolePrinter.printError("Find not found!");
+            ConsolePrinter.printError("File not found!");
         } catch (NoSuchElementException exception) {
             ConsolePrinter.printError("The script file is empty!");
         } catch (IllegalStateException exception) {
             ConsolePrinter.printError("Unexpected error!");
         }
-        organizationBuilder.setUserScanner(tmpScanner);
-        organizationBuilder.setUserMode();
+        productBuilder.setUserScanner(tmpScanner);
+        productBuilder.setUserMode();
     }
 
     /**
@@ -75,7 +75,7 @@ public class FileScriptMode implements IMode {
     public void initializeScript (String argument) throws FileNotFoundException, NoSuchElementException {
         this.userScanner = new Scanner(new File(argument));
         if(!userScanner.hasNext()) throw new NoSuchElementException();
-        scriptStack.add(argument);
+        scriptStack.add(argument.toLowerCase());
     }
 
     /**
@@ -85,7 +85,7 @@ public class FileScriptMode implements IMode {
      */
     public String getNextUserCommand() {
         String userCommand = this.userScanner.nextLine().trim();
-        ConsolePrinter.printInformation(">" + userCommand);
+//        ConsolePrinter.printInformation(">" + userCommand);
         return userCommand;
     }
 
@@ -117,38 +117,38 @@ public class FileScriptMode implements IMode {
                 commandStatus = 1;
                 break;
             case "execute_script" :
-                receiver.executeScript(commandArgument);
+//                receiver.executeScript(commandArgument);
                 handleExecuteScriptCommand(commandArgument);
                 commandStatus = 1;
                 break;
-            case "clear":
-                receiver.clear();
-                commandStatus = 1;
-                break;
-            case "exit":
-                receiver.exit();
-                commandStatus = 1;
-                break;
-            case "help":
-                receiver.help();
-                commandStatus = 1;
-                break;
-            case "history":
-                receiver.history();
-                commandStatus = 1;
-                break;
-            case "info":
-                receiver.info();
-                commandStatus = 1;
-                break;
-            case "print_descending":
-                receiver.descendingOrder();
-                commandStatus = 1;
-                break;
-            case "print_field_descending_price":
-                receiver.descendingPriceOrder();
-                commandStatus = 1;
-                break;
+//            case "clear":
+//                receiver.clear();
+//                commandStatus = 1;
+//                break;
+//            case "exit":
+//                receiver.exit();
+//                commandStatus = 1;
+//                break;
+//            case "help":
+//                receiver.help();
+//                commandStatus = 1;
+//                break;
+//            case "history":
+//                receiver.history();
+//                commandStatus = 1;
+//                break;
+//            case "info":
+//                receiver.info();
+//                commandStatus = 1;
+//                break;
+//            case "print_descending":
+//                receiver.descendingOrder();
+//                commandStatus = 1;
+//                break;
+//            case "print_field_descending_price":
+//                receiver.descendingPriceOrder();
+//                commandStatus = 1;
+//                break;
             case "remove_any_by_price":
                 receiver.removeByPrice(commandArgument);
                 commandStatus = 1;
@@ -157,18 +157,18 @@ public class FileScriptMode implements IMode {
                 receiver.removeById(commandArgument);
                 commandStatus = 1;
                 break;
-            case "remove_head":
-                receiver.removeHead();
-                commandStatus = 1;
-                break;
-            case "save":
-                receiver.save();
-                commandStatus = 1;
-                break;
-            case "show":
-                receiver.show();
-                commandStatus = 1;
-                break;
+//            case "remove_head":
+//                receiver.removeHead();
+//                commandStatus = 1;
+//                break;
+//            case "save":
+//                receiver.save();
+//                commandStatus = 1;
+//                break;
+//            case "show":
+//                receiver.show();
+//                commandStatus = 1;
+//                break;
             default :
                 commandStatus = Invoker.executeCommand(commandPart);
         }
@@ -180,19 +180,36 @@ public class FileScriptMode implements IMode {
      * @param scriptFile The path to the script file to be executed.
      */
     public void handleExecuteScriptCommand (String scriptFile) {
+        System.out.println(scriptStack);
+        String path = null;
+        if (System.getenv("HOMEPATH") != null) {
+            path = System.getenv("HOMEPATH");
+        } else if (System.getenv("HOME") != null) {
+            path = System.getenv("HOME");
+        }
+        String fullScriptPath = path + scriptFile;
         for (String script : scriptStack) {
-            if (scriptFile.toLowerCase().equals(script)) {
-                if (this.flag) {
-                    askAction();
-                }
-                this.flag = false;
-                while(count <= number) {
-                    ConsolePrinter.printResult("The execute_script command has been execute " + count + " - time!");
-                    scriptStack.remove(scriptStack.size() - 1);
-                    this.executeMode();
-                }
+            if (fullScriptPath.toLowerCase().equals(script)) {
+                flag = true;
+//                if (this.flag) {
+//                    askAction();
+//                }
+//                this.flag = false;
+//                while(count <= number) {
+//                    ConsolePrinter.printResult("The execute_script command has been execute " + count + " - time!");
+//                    scriptStack.remove(scriptStack.size() - 1);
+//                    this.executeMode();
+//                }
                 break;
             }
+        }
+        if (flag) {
+            ConsolePrinter.printResult("Detected recursion! Script won't be run");
+            scriptStack.clear();
+        }
+        else {
+            argument = fullScriptPath;
+            this.executeMode();
         }
     }
 

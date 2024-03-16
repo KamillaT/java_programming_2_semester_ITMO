@@ -11,5 +11,5 @@ j street
 56578
 save
 show
-execute_script script.txt
-exit
+execute_script \IdeaProjects\java_programming_2_semester-main-v.3\java_programming_2_semester-main\CollectionManager\output\data\script.txt
+info

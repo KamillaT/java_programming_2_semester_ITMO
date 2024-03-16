@@ -23,9 +23,10 @@ public class UserInputMode implements IMode {
             userScanner = new Scanner(System.in);
             do{
                 commandStatus = Invoker.executeCommand(userScanner.nextLine().trim().toLowerCase().split(" "));
-            } while (userScanner.hasNextLine() && commandStatus !=2 );
+            } while (userScanner.hasNextLine() && commandStatus != 2);
         } catch (NoSuchElementException exception) {
-             ConsolePrinter.printError("No user input detected!");
+             ConsolePrinter.printError("No suitable user input detected!");
+            System.exit(0);
         } catch (IllegalStateException exception) {
             ConsolePrinter.printError("Unexpected error!");
         }
