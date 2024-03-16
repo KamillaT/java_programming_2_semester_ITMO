@@ -183,9 +183,9 @@ public class FileScriptMode implements IMode {
         System.out.println(scriptStack);
         String path = null;
         if (System.getenv("HOMEPATH") != null) {
-            path = System.getenv("HOMEPATH");
+            path = System.getenv("HOMEPATH") + "\\";
         } else if (System.getenv("HOME") != null) {
-            path = System.getenv("HOME");
+            path = System.getenv("HOME") + "/";
         }
         String fullScriptPath = path + scriptFile;
         for (String script : scriptStack) {
@@ -204,7 +204,7 @@ public class FileScriptMode implements IMode {
             }
         }
         if (flag) {
-            ConsolePrinter.printResult("Detected recursion! Script won't be run");
+            ConsolePrinter.printError("Detected recursion! Script won't run");
             scriptStack.clear();
         }
         else {
