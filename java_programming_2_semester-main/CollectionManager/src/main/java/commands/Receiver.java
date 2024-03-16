@@ -23,24 +23,25 @@ public class Receiver {
      * Execute the help command
      */
     public void help() {
+        pushCommand("help");
         invoker.getCommands().forEach((name, command) -> command.getCommandInformation());
         ConsolePrinter.printResult("The 'help' command has been executed successfully!");
-        pushCommand("help");
     }
 
     /**
      * Execute the info command
      */
     public void info() {
+        pushCommand("info");
         CollectionManager.information();
         ConsolePrinter.printResult("The 'info' command has been executed successfully!");
-        pushCommand("info");
     }
 
     /**
      * Execute the show command
      */
     public void show() {
+        pushCommand("show");
         CollectionManager.fullInformation();
         ConsolePrinter.printResult("The 'show' command has been executed successfully!");
     }
@@ -49,10 +50,10 @@ public class Receiver {
      * Execute the add command
      */
     public void add(Scanner scanner) {
+        pushCommand("add");
         Product product = ProductCreator.productCreator(scanner);
         CollectionManager.addProduct(product);
         ConsolePrinter.printResult("The 'add' command has been executed successfully!");
-        pushCommand("add");
         CollectionManager.productStack.push(product);
     }
 
@@ -60,10 +61,10 @@ public class Receiver {
      * Execute the add_if_max command
      */
     public void addIfMin(Scanner scanner) {
+        pushCommand("add_if_min");
         Product product = ProductCreator.productCreator(scanner);
         CollectionManager.addIfMin(product);
         if (CollectionManager.getAddIfMinFlag()) {
-            pushCommand("add_if_min");
             CollectionManager.productStack.push(product);
         }
         ConsolePrinter.printResult("The 'add_if_min' command has been executed successfully!");
@@ -74,13 +75,13 @@ public class Receiver {
      */
     public void update(String sID, Scanner scanner) {
         int ID;
+        pushCommand("update");
         try {
             if (CollectionManager.getCollection().size() == 0) throw new EmptyCollectionException();
             ID = Integer.parseInt(sID);
             if (CollectionManager.idExistence(ID)) {
                 Product tempProduct1 = CollectionManager.getProductByID(ID);
                 Product oldProduct = tempProduct1.clone();
-                pushCommand("update");
                 CollectionManager.productStack.push(oldProduct);
                 Product newProduct = ProductCreator.productCreator(scanner);
                 CollectionManager.updateElement(newProduct, ID);
@@ -103,11 +104,11 @@ public class Receiver {
      */
     public void removeById(String sID) {
         Integer ID;
+        pushCommand("remove");
         try {
             ID = Integer.parseInt(sID);
             if (CollectionManager.idExistence(ID)) {
                 Product product = CollectionManager.getProductByID(ID);
-                pushCommand("remove");
                 CollectionManager.productStack.push(product);
                 CollectionManager.removeElement(ID);
                 ConsolePrinter.printResult("The 'remove_by_id' command has been executed successfully!");
@@ -183,6 +184,7 @@ public class Receiver {
      */
     public void removeByPrice(String sPrice) {
         Float Price;
+        pushCommand("remove_by_price");
         try {
             Price = Float.parseFloat(sPrice);
             if (CollectionManager.priceExistence(Price)) {
@@ -201,6 +203,7 @@ public class Receiver {
      * Execute the remove_head command
      */
     public void removeHead() {
+        pushCommand("remove_head");
         System.out.println("The 'remove_head' command has been executed successfully");
         CollectionManager.removeHead();
     }
@@ -209,6 +212,7 @@ public class Receiver {
      * Execute the print_descending command
      */
     public void descendingOrder() {
+        pushCommand("print_descending");
         System.out.println("The 'print_descending' command has been executed successfully");
         CollectionManager.printDescendingOrder();
     }
@@ -217,6 +221,7 @@ public class Receiver {
      * Execute the print_field_descending_price command
      */
     public void descendingPriceOrder() {
+        pushCommand("print_field_descending_price");
         System.out.println("The 'print_field_descending_price' command has been executed successfully");
         CollectionManager.printDescendingPriceOrder();
     }
