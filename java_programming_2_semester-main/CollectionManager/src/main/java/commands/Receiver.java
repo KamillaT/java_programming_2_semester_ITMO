@@ -166,7 +166,7 @@ public class Receiver {
     public void history() {
         pushCommand("history");
         CollectionManager.getHistory();
-        System.out.println("The 'history' command has been executed successfully");
+        ConsolePrinter.printResult("The 'history' command has been executed successfully");
     }
 
     /**
@@ -189,13 +189,13 @@ public class Receiver {
             Price = Float.parseFloat(sPrice);
             if (CollectionManager.priceExistence(Price)) {
                 CollectionManager.removeElementByPrice(Price);
-                System.out.println("The 'remove_by_price' command has been executed successfully");
-                System.out.println("The product with this price has been deleted!");
+                ConsolePrinter.printResult("The 'remove_by_price' command has been executed successfully");
+                ConsolePrinter.printResult("The product with this price has been deleted!");
             } else {
-                System.out.println("The product with this price does not exist!");
+                ConsolePrinter.printError("The product with this price does not exist!");
             }
         } catch (NumberFormatException exception) {
-            System.out.println("Invalid command argument!");
+            ConsolePrinter.printError("Invalid command argument!");
         }
     }
 
@@ -204,7 +204,7 @@ public class Receiver {
      */
     public void removeHead() {
         pushCommand("remove_head");
-        System.out.println("The 'remove_head' command has been executed successfully");
+        ConsolePrinter.printResult("The 'remove_head' command has been executed successfully");
         CollectionManager.removeHead();
     }
 
@@ -213,7 +213,7 @@ public class Receiver {
      */
     public void descendingOrder() {
         pushCommand("print_descending");
-        System.out.println("The 'print_descending' command has been executed successfully");
+        ConsolePrinter.printResult("The 'print_descending' command has been executed successfully");
         CollectionManager.printDescendingOrder();
     }
 
@@ -222,7 +222,7 @@ public class Receiver {
      */
     public void descendingPriceOrder() {
         pushCommand("print_field_descending_price");
-        System.out.println("The 'print_field_descending_price' command has been executed successfully");
+        ConsolePrinter.printResult("The 'print_field_descending_price' command has been executed successfully");
         CollectionManager.printDescendingPriceOrder();
     }
 }

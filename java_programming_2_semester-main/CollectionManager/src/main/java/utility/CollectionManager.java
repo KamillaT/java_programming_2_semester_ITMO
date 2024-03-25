@@ -198,9 +198,9 @@ public class CollectionManager {
             if (priorityQueue.size() == 0) throw new EmptyCollectionException();
             System.out.println("First product: " + priorityQueue.poll());
         } catch (EmptyCollectionException exception) {
-            System.out.println("Collection is empty!");
+            ConsolePrinter.printError("Collection is empty!");
         }
-        System.out.println("Fisrt element was successfully deleted!");
+        ConsolePrinter.printResult("Fisrt element was successfully deleted!");
     }
 
     public static void printDescendingOrder() {
@@ -212,7 +212,7 @@ public class CollectionManager {
                 System.out.println(reversedPriorityQueue.poll());
             }
         } catch (EmptyCollectionException exception) {
-            System.out.println("The collection is empty.");
+            ConsolePrinter.printError("The collection is empty.");
         }
     }
 
@@ -227,7 +227,7 @@ public class CollectionManager {
                 System.out.println(reversedPrice.poll());
             }
         } catch (EmptyCollectionException exception) {
-            System.out.println("The collection is empty.");
+            ConsolePrinter.printError("The collection is empty.");
         }
     }
 
