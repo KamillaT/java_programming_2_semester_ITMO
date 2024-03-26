@@ -181,15 +181,15 @@ public class FileScriptMode implements IMode {
      */
     public void handleExecuteScriptCommand (String scriptFile) {
 //        System.out.println(scriptStack);
-        String path = null;
-        if (System.getenv("HOMEPATH") != null) {
-            path = System.getenv("HOMEPATH") + "\\";
-        } else if (System.getenv("HOME") != null) {
-            path = System.getenv("HOME") + "/";
-        }
-        String fullScriptPath = path + scriptFile;
+//        String path = null;
+//        if (System.getenv("HOMEPATH") != null) {
+//            path = System.getenv("HOMEPATH") + "\\";
+//        } else if (System.getenv("HOME") != null) {
+//            path = System.getenv("HOME") + "/";
+//        }
+//        String fullScriptPath = path + scriptFile;
         for (String script : scriptStack) {
-            if (fullScriptPath.toLowerCase().equals(script)) {
+            if (scriptFile.toLowerCase().equals(script)) {
                 flag = true;
 //                if (this.flag) {
 //                    askAction();
@@ -208,7 +208,7 @@ public class FileScriptMode implements IMode {
             scriptStack.clear();
         }
         else {
-            argument = fullScriptPath;
+            argument = scriptFile;
             this.executeMode();
         }
     }

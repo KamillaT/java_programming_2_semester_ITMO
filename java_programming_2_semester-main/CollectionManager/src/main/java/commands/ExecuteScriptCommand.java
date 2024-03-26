@@ -32,14 +32,19 @@ public class ExecuteScriptCommand extends AbstractCommand {
     public void execute(String[] arg) throws StackOverflowError, WrongAmountOfElementsException {
         if (arg.length != 2) throw new WrongAmountOfElementsException();
         try {
-            if (System.getenv("HOMEPATH") != null) {
-                path = System.getenv("HOMEPATH");
-                path += "\\" + arg[1];
-            } else if (System.getenv("HOME") != null) {
-                path = System.getenv("HOME");
-                path += "/" + arg[1];
+            if (System.getenv("SCRIPT_PATH") != null) {
+                receiver.executeScript(arg[1]);
             }
-            receiver.executeScript(path);
+            else {
+                ConsolePrinter.printError("No path detected");
+            }
+//            if (System.getenv("HOMEPATH") != null) {
+//                path = System.getenv("HOMEPATH");
+//                path += "\\" + arg[1];
+//            } else if (System.getenv("HOME") != null) {
+//                path = System.getenv("HOME");
+//                path += "/" + arg[1];
+//            }
         } catch (StackOverflowError error) {
             ConsolePrinter.printError("Stack overflow occurred");
         }
