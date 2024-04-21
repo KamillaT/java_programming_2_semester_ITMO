@@ -3,14 +3,14 @@ package commands;
 import exceptions.WrongAmountOfElementsException;
 
 /**
- * The RemoveByIdCommand class represents a command to remove an element from a collection by its id.
+ * The RemoveAnyByPriceCommand class represents a command to remove an element from a collection by its id.
  * This command is used to remove an organization from the collection based on its id.
  */
 public class RemoveAnyByPriceCommand extends AbstractCommand {
     private final Receiver receiver;
 
     /**
-     * Constructs a RemoveByIdCommand with the specified receiver.
+     * Constructs a RemoveAnyByPriceCommand with the specified receiver.
      *
      * @param receiver the receiver used to execute the command
      */

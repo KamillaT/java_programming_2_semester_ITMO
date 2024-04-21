@@ -3,14 +3,14 @@ package commands;
 import exceptions.WrongAmountOfElementsException;
 
 /**
- * The RemoveByIdCommand class represents a command to remove an element from a collection by its id.
+ * The RemoveHeadCommand class represents a command to remove an element from a collection by its id.
  * This command is used to remove an organization from the collection based on its id.
  */
 public class RemoveHeadCommand extends AbstractCommand {
     private final Receiver receiver;
 
     /**
-     * Constructs a RemoveByIdCommand with the specified receiver.
+     * Constructs a RemoveHeadCommand with the specified receiver.
      *
      * @param receiver the receiver used to execute the command
      */

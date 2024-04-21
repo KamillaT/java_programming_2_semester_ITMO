@@ -5,7 +5,7 @@ public class PrintDescendingCommand extends AbstractCommand{
     private final Receiver receiver;
 
     /**
-     * Constructs a RemoveByIdCommand with the specified receiver.
+     * Constructs a PrintDescendingCommand with the specified receiver.
      *
      * @param receiver the receiver used to execute the command
      */
