@@ -64,9 +64,9 @@ public class Product implements Comparable<Product>, Cloneable, Serializable {
 
     @Override
     public int compareTo(Product product) {
-        if (this.price - product.getPrice() > 0) return 1;
-        if (this.price - product.getPrice() == 0) return 0;
-        else return -1;
+        if (this.price > product.getPrice()) return 1;
+        if (this.price < product.getPrice()) return -1;
+        else return 0;
     }
 
     @Override

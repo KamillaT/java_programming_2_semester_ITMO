@@ -5,7 +5,6 @@ import file.CSVProcess;
 import utility.*;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Stack;
@@ -14,10 +13,7 @@ import java.util.stream.Collectors;
 public class CollectionManager {
     private static PriorityQueue<Product> priorityQueue;
     private static LocalDateTime initializationDate;
-    public static Stack<String> historyCommandList = new Stack<>() ;
-    private static Comparator<Product> descendingOrderComparator = Comparator.comparing(Product::getPrice).reversed();
-
-    private static Comparator<Float> descendingOrderComparatorFloat = Comparator.reverseOrder();
+    public static Stack<String> historyCommandList = new Stack<>();
 
     public static void initializationCollection() {
         priorityQueue = new PriorityQueue<>();
@@ -54,7 +50,7 @@ public class CollectionManager {
 
     public static String addIfMin(Product product) {
         pushCommand("add_if_min");
-        if (priorityQueue.isEmpty() || priorityQueue.stream().allMatch(org -> org.compareTo(product) <= 0)) {
+        if (priorityQueue.isEmpty() || priorityQueue.stream().allMatch(pr -> pr.compareTo(product) >= 0)) {
             add(product);
             return "The product has been added to the collection!";
         }
@@ -69,35 +65,36 @@ public class CollectionManager {
 
     public static String history() {
         pushCommand("history");
-        return historyCommandList.toString();
+        String result = "";
+        Integer i = 1;
+        for (String s : historyCommandList) {
+            result += i + ") " + s + "\n";
+            i++;
+        }
+        return result;
     }
 
     public static String descendingOrder() {
         pushCommand("print_descending");
         if (priorityQueue.isEmpty()) return "The collection is empty!";
-        else {
-            PriorityQueue<Product> reversedPriorityQueue = new PriorityQueue<>(descendingOrderComparator);
-            reversedPriorityQueue.addAll(priorityQueue);
-
-            return reversedPriorityQueue.stream()
-                    .map(Object::toString)
-                    .collect(Collectors.joining());
-        }
+        return priorityQueue.stream()
+                .sorted(Comparator.reverseOrder())
+                .map(Product::toString)
+                .collect(Collectors.joining());
     }
 
     public static String descendingPriceOrder() {
         pushCommand("print_field_descending_price");
         if (priorityQueue.isEmpty()) return "The collection is empty!";
-        else {
-            PriorityQueue<Float> reversedPrice = new PriorityQueue<>(descendingOrderComparatorFloat);
-            for (Product product : priorityQueue) {
-                reversedPrice.add(product.getPrice());
-            }
-
-            return reversedPrice.stream()
-                    .map(Object::toString)
-                    .collect(Collectors.joining());
+        PriorityQueue<Float> reversedPrice = new PriorityQueue<>(Comparator.reverseOrder());
+        for (Product product : priorityQueue) {
+            reversedPrice.add(product.getPrice());
         }
+        return reversedPrice.stream()
+                .sorted(Comparator.reverseOrder())
+                .map(Object::toString)
+                .collect(Collectors.joining("\n"));
+
     }
 
     public static String removeByID(String sID) {
@@ -127,6 +124,7 @@ public class CollectionManager {
         pushCommand("show");
         if (priorityQueue.isEmpty()) return "The collection is empty!";
         return priorityQueue.stream()
+                .sorted()
                 .map(Product::toString)
                 .collect(Collectors.joining());
     }
@@ -146,4 +144,3 @@ public class CollectionManager {
         priorityQueue = CSVProcess.loadCollection(fileName);
     }
 }
-

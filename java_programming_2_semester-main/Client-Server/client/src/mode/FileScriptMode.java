@@ -55,9 +55,10 @@ public class FileScriptMode implements IMode {
      * @throws NoSuchElementException if the script file is empty.
      */
     public void initializeScript(String argument) throws FileNotFoundException, NoSuchElementException {
-        this.userScanner = new Scanner(new File(argument));
+        String path = System.getenv("SCRIPT_PATH") + argument;
+        this.userScanner = new Scanner(new File(path));
         if (!userScanner.hasNext()) throw new NoSuchElementException();
-        scriptStack.add(argument);
+        scriptStack.add(path);
     }
 
     /**
