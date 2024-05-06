@@ -37,7 +37,7 @@ public class ProductBuilder {
             try {
                 ConsolePrinter.printInformation("Enter product's name: ");
                 System.out.print(">");
-                name = userScanner.nextLine().trim();
+                name = userScanner.nextLine().trim(); // bug somewhere here
                 if(fileMode) ConsolePrinter.printInformation(name);
                 if (name.equals("")) throw new NotDeclaredValueException();
                 break;
@@ -47,7 +47,7 @@ public class ProductBuilder {
             } catch (NoSuchElementException exception) {
                 ConsolePrinter.printError("The name isn't recognized!");
                 if (fileMode) throw new WrongInputInScriptException();
-                System.exit(0);
+                System.exit(0); // check here
             } catch (IllegalStateException exception) {
                 ConsolePrinter.printError("Unexpected error!");
                 System.exit(0);
