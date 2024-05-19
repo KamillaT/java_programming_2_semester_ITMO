@@ -50,9 +50,10 @@ public class CommandHandler {
                 return 0;
             }
         } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+//            throw new RuntimeException(e);
+            ConsolePrinter.printError("Exception occured while executing command ");
         }
-
+        return 0;
     }
 
 

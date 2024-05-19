@@ -11,9 +11,24 @@ import java.util.Stack;
 import java.util.stream.Collectors;
 
 public class CollectionManager {
+    private static CollectionManager instance;
     private static PriorityQueue<Product> priorityQueue;
     private static LocalDateTime initializationDate;
     public static Stack<String> historyCommandList = new Stack<>();
+
+    // Singleton pattern
+    private CollectionManager() {
+        priorityQueue = new PriorityQueue<>();
+        initializationDate = LocalDateTime.now();
+        historyCommandList = new Stack<>();
+    }
+
+    public static CollectionManager getInstance() {
+        if (instance == null) {
+            instance = new CollectionManager();
+        }
+        return instance;
+    }
 
     public static void initializationCollection() {
         priorityQueue = new PriorityQueue<>();
@@ -87,12 +102,13 @@ public class CollectionManager {
         pushCommand("print_field_descending_price");
         if (priorityQueue.isEmpty()) return "The collection is empty!";
         PriorityQueue<Float> reversedPrice = new PriorityQueue<>(Comparator.reverseOrder());
-        for (Product product : priorityQueue) {
-            reversedPrice.add(product.getPrice());
-        }
-        return reversedPrice.stream()
+//        for (Product product : priorityQueue) {
+//            reversedPrice.add(product.getPrice());
+//        }
+        return priorityQueue.stream()
                 .sorted(Comparator.reverseOrder())
-                .map(Object::toString)
+                .map(product -> product.getPrice().toString())
+//                .map(Object::toString)
                 .collect(Collectors.joining("\n"));
 
     }
